@@ -155,7 +155,7 @@ const Home = () => {
               <Badge>
                 Next ID:
                 <Badge ml={1} colorScheme="green">
-                {parseInt(totalSupply) + parseInt(1)}
+                  1
                 </Badge>
               </Badge>
               <Badge>
