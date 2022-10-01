@@ -104,8 +104,32 @@ const usePlatziPunksData = () => {
 };
 
 // Singular
-// const usePlatziPunkData = () => {
+const usePlatziPunkData = (tokenId = null) => {
+  const [punk, setPunk] = useState({});
+  const [loading, setLoading] = useState(true);
+  const platziPunks = usePlatziPunks();
 
-// }
+  const update = useCallback(async () => {
+    if (platziPunks && tokenId != null) {
+      setLoading(true);
+      console.log('ingresa')
+      const toSet = await getPunkData({ tokenId, platziPunks });
+      console.log(toSet)
+      setPunk(toSet);
+      console.log('sale')
+      setLoading(false);
+    }
+  }, [platziPunks, tokenId]);
 
-export { usePlatziPunksData };
+  useEffect(() => {
+    update();
+  }, [update]);
+
+  return {
+    loading,
+    punk,
+    update,
+  };
+};
+
+export { usePlatziPunksData, usePlatziPunkData };

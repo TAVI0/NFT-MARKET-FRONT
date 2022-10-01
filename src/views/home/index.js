@@ -20,8 +20,9 @@ const Home = () => {
   const platziPunks = usePlatziPunks();
   const toast = useToast();
 
-  const [totalSupply, setTotalSupply] = useState("");
-  const [disponibles, setdisponibles] = useState("");
+  const [totalSupply, setTotalSupply] = useState(0);
+  const [disponibles, setdisponibles] = useState(0);
+  const [siguienteId, setSiguienteId] = useState(0);
 
   const mint = () => {
     setIsMinting(true);
@@ -55,15 +56,16 @@ const Home = () => {
 
   const getPlatziPunksData = useCallback(async () => {
     if (platziPunks) {
-      const totalSupply = await platziPunks.methods.totalSupply().call();
+      const ttlSupply = await platziPunks.methods.totalSupply().call();
       const maxSupply = await platziPunks.methods.maxSupply().call();
       const dnaPreview = await platziPunks.methods
         .deterministicPseudoRandomDNA(totalSupply, account)
         .call();
       const image = await platziPunks.methods.imageByDNA(dnaPreview).call();
       setImageSrc(image);
-      setTotalSupply(totalSupply);
-      setdisponibles(maxSupply-totalSupply);
+      setTotalSupply(ttlSupply);
+      setdisponibles(maxSupply-ttlSupply);
+      setSiguienteId(parseInt(ttlSupply)+parseInt(1));
     }
   }, [platziPunks, account]);
 
@@ -155,7 +157,7 @@ const Home = () => {
               <Badge>
                 Next ID:
                 <Badge ml={1} colorScheme="green">
-                  1
+                  {siguienteId}
                 </Badge>
               </Badge>
               <Badge>
